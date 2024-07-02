@@ -1,6 +1,6 @@
 import 'package:education_project/core/res/theme.dart';
 import 'package:education_project/core/services/router.dart';
-import 'package:education_project/presentation/on_boarding/on_boarding.dart';
+import 'package:education_project/on_boarding/presentation/on_boarding/on_boarding.dart';
 import 'package:flutter/material.dart';
 
 void main() {
