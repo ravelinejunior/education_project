@@ -32,6 +32,12 @@ class MediaRes {
   static const success = '$_baseIcons/success.jeg';
   static const warning = '$_baseIcons/warning.jpg';
   static const info = '$_baseIcons/info.jpg';
+  static const onboardingOne = '$_baseIcons/on_boarding_one.jpg';
+  static const onboardingTwo = '$_baseIcons/on_boarding_two.jpg';
+  static const onboardingThree = '$_baseIcons/on_boarding_three.jpg';
+  static const onboardingFour = '$_baseIcons/on_boarding_four.jpg';
+  static const onboardingFive = '$_baseIcons/on_boarding_five.jpg';
+  static const onboardingSix = '$_baseIcons/on_boarding_six.jpg';
 
   // Backgrounds
 

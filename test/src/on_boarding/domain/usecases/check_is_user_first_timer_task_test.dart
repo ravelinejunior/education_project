@@ -40,7 +40,8 @@ void main() {
     'CheckUserIsFirstTimerUseCase',
     () {
       test(
-        'should return a true response when [checkIfUserIsFirstTimer] is called',
+        'should return a true response when [checkIfUserIsFirstTimer] '
+        'is called',
         () async {
           // Arrange
           when(() => repository.checkIfUserIsFirstTimer()).thenAnswer(
