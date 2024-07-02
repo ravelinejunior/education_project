@@ -1,3 +1,5 @@
 {
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "dart.flutterCreateOrganization": null,
+  "dart.flutterSdkPath": "C:/flutter/bin",
 }

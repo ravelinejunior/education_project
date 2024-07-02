@@ -2,8 +2,8 @@ import 'package:education_project/core/use_cases/use_case.dart';
 import 'package:education_project/core/utils/typedef.dart';
 import 'package:education_project/on_boarding/domain/repository/on_boarding_repository.dart';
 
-class CheckUserIsFirstTimer extends UseCaseWithoutParams<bool> {
-  CheckUserIsFirstTimer(this._onBoardingRepository);
+class CheckUserIsFirstTimerUseCase extends UseCaseWithoutParams<bool> {
+  CheckUserIsFirstTimerUseCase(this._onBoardingRepository);
 
   final OnBoardingRepository _onBoardingRepository;
 
