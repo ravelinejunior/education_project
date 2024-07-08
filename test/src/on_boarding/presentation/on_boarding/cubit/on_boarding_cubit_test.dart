@@ -77,4 +77,52 @@ void main() {
       );
     },
   );
+
+  group(
+    'checkFirstTimer',
+    () {
+      blocTest<OnBoardingCubit, OnBoardingCubitState>(
+        'should emit [CheckingFirstTimer, UserChecked] when successful',
+        build: () {
+          when(checkUserIsFirstTimerUseCase.call).thenAnswer(
+            (_) async => const Right(true),
+          );
+          return cubitState;
+        },
+        act: (cubit) => cubit.checkIfUserIsFirstTimer(),
+        expect: () => const <OnBoardingCubitState>[
+          CheckingIfUserIsFirstTimer(),
+          OnBoardingStatus(isFirstTimer: true),
+        ],
+        verify: (_) {
+          verify(() => checkUserIsFirstTimerUseCase()).called(1);
+          verifyNoMoreInteractions(checkUserIsFirstTimerUseCase);
+        },
+      );
+
+      blocTest<OnBoardingCubit, OnBoardingCubitState>(
+        'should emit [CheckingFirstTimer, OnBoardingError] when checking gets '
+        'some error',
+        build: () {
+          when(() => checkUserIsFirstTimerUseCase()).thenAnswer(
+            (_) async => const Left(
+              tFailure,
+            ),
+          );
+          return cubitState;
+        },
+        act: (cubit) => cubit.checkIfUserIsFirstTimer(),
+        expect: () => [
+          const CheckingIfUserIsFirstTimer(),
+          OnBoardingError(
+            message: tFailure.errorMessage,
+          ),
+        ],
+        verify: (_) {
+          verify(() => checkUserIsFirstTimerUseCase()).called(1);
+          verifyNoMoreInteractions(checkUserIsFirstTimerUseCase);
+        },
+      );
+    },
+  );
 }
