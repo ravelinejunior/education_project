@@ -35,9 +35,7 @@ class OnBoardingStatus extends OnBoardingCubitState {
 }
 
 class OnBoardingError extends OnBoardingCubitState {
-  const OnBoardingError({
-    required this.message,
-  });
+  const OnBoardingError({required this.message});
 
   final String message;
 
