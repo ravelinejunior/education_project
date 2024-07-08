@@ -1,6 +1,5 @@
 import 'package:education_project/core/errors/exceptions.dart';
 import 'package:education_project/on_boarding/data/datasource/local_data_source.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
