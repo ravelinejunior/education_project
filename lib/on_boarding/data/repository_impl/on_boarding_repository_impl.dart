@@ -10,8 +10,6 @@ class OnBoardingRepositoryImpl implements OnBoardingRepository {
 
   final OnBoardingLocalDataSource localDataSource;
 
-  @override
-
   /// Caches the first timer.
   ///
   /// This function attempts to cache the first timer. If a [CacheException] is
@@ -19,6 +17,7 @@ class OnBoardingRepositoryImpl implements OnBoardingRepository {
   ///
   /// Returns a [ResultFuture] that completes with `void` when the caching is
   /// done.
+  @override
   ResultFuture<void> cacheFirstTimer() async {
     try {
       await localDataSource.cacheFirstTimer();
@@ -27,13 +26,11 @@ class OnBoardingRepositoryImpl implements OnBoardingRepository {
       return Left(
         CacheFailure(
           message: e.message,
-          statusCode: e.statusCode,
+          statusCode: e.statusCode!,
         ),
       );
     }
   }
-
-  @override
 
   /// Checks if the user is the first timer.
   ///
@@ -42,6 +39,7 @@ class OnBoardingRepositoryImpl implements OnBoardingRepository {
   ///
   /// Returns a [ResultFuture] that completes with a [bool] indicating whether
   /// the user is the first timer.
+  @override
   ResultFuture<bool> checkIfUserIsFirstTimer() async {
     try {
       final result = await localDataSource.checkIfUserIsFirstTimer();
@@ -50,7 +48,7 @@ class OnBoardingRepositoryImpl implements OnBoardingRepository {
       return Left(
         CacheFailure(
           message: e.message,
-          statusCode: e.statusCode,
+          statusCode: e.statusCode!,
         ),
       );
     }
