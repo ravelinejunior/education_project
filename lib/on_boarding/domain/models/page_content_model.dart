@@ -55,15 +55,6 @@ class PageContentModel extends Equatable {
           image: MediaRes.onboardingFive,
         );
 
-  const PageContentModel.sixth()
-      : this(
-          title: 'Learn Flutter',
-          description:
-              'With the new Flutter App Template, you can quickly build an '
-              'app with Flutter, without having to learn any new technologies.',
-          image: MediaRes.onboardingSix,
-        );
-
   factory PageContentModel.fromMap(Map<String, dynamic> map) {
     return PageContentModel(
       title: map['title'] as String,

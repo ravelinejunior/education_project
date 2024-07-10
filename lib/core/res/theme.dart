@@ -11,6 +11,7 @@ ThemeData mainThemeData() {
       backgroundColor: Colors.transparent,
       elevation: 0,
     ),
+    scaffoldBackgroundColor: Colors.white,
     textTheme: TextTheme(
       bodyLarge: GoogleFonts.poppins(),
       bodyMedium: GoogleFonts.poppins(),

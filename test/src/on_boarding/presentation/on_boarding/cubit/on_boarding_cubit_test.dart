@@ -85,14 +85,14 @@ void main() {
         'should emit [CheckingFirstTimer, UserChecked] when successful',
         build: () {
           when(checkUserIsFirstTimerUseCase.call).thenAnswer(
-            (_) async => const Right(true),
+            (_) async => const Right(false),
           );
           return cubitState;
         },
         act: (cubit) => cubit.checkIfUserIsFirstTimer(),
         expect: () => const <OnBoardingCubitState>[
           CheckingIfUserIsFirstTimer(),
-          OnBoardingStatus(isFirstTimer: true),
+          OnBoardingStatus(isFirstTimer: false),
         ],
         verify: (_) {
           verify(() => checkUserIsFirstTimerUseCase()).called(1);
