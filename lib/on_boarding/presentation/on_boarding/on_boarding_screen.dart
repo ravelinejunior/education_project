@@ -1,5 +1,6 @@
 import 'package:education_project/core/common/views/loading_view.dart';
 import 'package:education_project/core/common/widgets/gradient_background.dart';
+import 'package:education_project/core/extensions/context_extensions.dart';
 import 'package:education_project/core/res/icons.dart';
 import 'package:education_project/on_boarding/domain/models/page_content_model.dart';
 import 'package:education_project/on_boarding/presentation/on_boarding/components/on_boarding_page.dart';
@@ -19,7 +20,6 @@ class OnBoardingScreen extends StatefulWidget {
 
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
   final _pageController = PageController();
-  int _currentPage = 0;
 
   @override
   void initState() {
@@ -31,7 +31,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
       body: GradientBackground(
         image: MediaRes.whiteBackground,
@@ -77,23 +76,21 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
                   // SmothiePageIndicator
                   Align(
-                    alignment: Alignment.bottomCenter,
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 20),
                       child: SmoothPageIndicator(
                         controller: _pageController,
                         count: 5,
-                        effect: const ExpandingDotsEffect(
+                        effect: ExpandingDotsEffect(
                           dotHeight: 8,
                           dotWidth: 8,
-                          dotColor: Color.fromARGB(137, 44, 44, 44),
-                          activeDotColor: Colors.white,
+                          dotColor: const Color.fromARGB(137, 44, 44, 44),
+                          activeDotColor: context.theme.colorScheme.primary,
                         ),
                         onDotClicked: (index) {
                           setState(() {
-                            _currentPage = index;
                             _pageController.animateToPage(
-                              _currentPage,
+                              index,
                               duration: const Duration(milliseconds: 400),
                               curve: Curves.easeInOut,
                             );
