@@ -19,7 +19,7 @@ class OnBoardingPage extends StatelessWidget {
         children: [
           Image.asset(
             fit: BoxFit.fill,
-            height: context.height * 0.5,
+            height: context.height * 0.45,
             pageContent.image,
           ),
           SizedBox(
@@ -32,7 +32,7 @@ class OnBoardingPage extends StatelessWidget {
                 Text(
                   pageContent.title,
                   style: GoogleFonts.montserrat(
-                    fontSize: 40,
+                    fontSize: 32,
                     fontWeight: FontWeight.bold,
                     color: context.theme.cardColor,
                   ),
@@ -44,7 +44,7 @@ class OnBoardingPage extends StatelessWidget {
                 Text(
                   pageContent.description,
                   style: GoogleFonts.montserrat(
-                    fontSize: 16,
+                    fontSize: 12,
                     fontWeight: FontWeight.w300,
                     color: context.theme.cardColor,
                   ),
