@@ -1,6 +1,6 @@
 import 'package:education_project/core/use_cases/use_case.dart';
 import 'package:education_project/core/utils/typedef.dart';
-import 'package:education_project/on_boarding/domain/repository/on_boarding_repository.dart';
+import 'package:education_project/src/on_boarding/domain/repository/on_boarding_repository.dart';
 
 class CacheUserFirstTimerUseCase extends UseCaseWithoutParams<void> {
   CacheUserFirstTimerUseCase(this._onBoardingRepository);

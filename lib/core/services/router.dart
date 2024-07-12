@@ -1,7 +1,7 @@
 import 'package:education_project/core/common/views/page_under_construction.dart';
 import 'package:education_project/core/services/injection_container.dart';
-import 'package:education_project/on_boarding/presentation/on_boarding/cubit/on_boarding_cubit.dart';
-import 'package:education_project/on_boarding/presentation/on_boarding/on_boarding_screen.dart';
+import 'package:education_project/src/on_boarding/presentation/on_boarding/cubit/on_boarding_cubit.dart';
+import 'package:education_project/src/on_boarding/presentation/on_boarding/on_boarding_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

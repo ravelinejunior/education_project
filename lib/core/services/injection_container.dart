@@ -1,9 +1,9 @@
-import 'package:education_project/on_boarding/data/datasource/local_data_source.dart';
-import 'package:education_project/on_boarding/data/repository_impl/on_boarding_repository_impl.dart';
-import 'package:education_project/on_boarding/domain/repository/on_boarding_repository.dart';
-import 'package:education_project/on_boarding/domain/use_cases/cache_user_first_timer.dart';
-import 'package:education_project/on_boarding/domain/use_cases/check_user_is_first_timer.dart';
-import 'package:education_project/on_boarding/presentation/on_boarding/cubit/on_boarding_cubit.dart';
+import 'package:education_project/src/on_boarding/data/datasource/local_data_source.dart';
+import 'package:education_project/src/on_boarding/data/repository_impl/on_boarding_repository_impl.dart';
+import 'package:education_project/src/on_boarding/domain/repository/on_boarding_repository.dart';
+import 'package:education_project/src/on_boarding/domain/use_cases/cache_user_first_timer.dart';
+import 'package:education_project/src/on_boarding/domain/use_cases/check_user_is_first_timer.dart';
+import 'package:education_project/src/on_boarding/presentation/on_boarding/cubit/on_boarding_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

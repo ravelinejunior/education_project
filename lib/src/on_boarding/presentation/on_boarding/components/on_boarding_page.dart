@@ -1,5 +1,5 @@
 import 'package:education_project/core/extensions/context_extensions.dart';
-import 'package:education_project/on_boarding/domain/models/page_content_model.dart';
+import 'package:education_project/src/on_boarding/domain/models/page_content_model.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

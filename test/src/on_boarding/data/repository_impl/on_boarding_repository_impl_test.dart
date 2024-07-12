@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:education_project/core/errors/exceptions.dart';
 import 'package:education_project/core/errors/failures.dart';
-import 'package:education_project/on_boarding/data/datasource/local_data_source.dart';
-import 'package:education_project/on_boarding/data/repository_impl/on_boarding_repository_impl.dart';
-import 'package:education_project/on_boarding/domain/repository/on_boarding_repository.dart';
+import 'package:education_project/src/on_boarding/data/datasource/local_data_source.dart';
+import 'package:education_project/src/on_boarding/data/repository_impl/on_boarding_repository_impl.dart';
+import 'package:education_project/src/on_boarding/domain/repository/on_boarding_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
