@@ -26,5 +26,42 @@ void main() {
       expect(result, isA<LocalUserModel>());
       expect(result, equals(tUserModel));
     });
+
+    test('should throw an [Error] when the map is invalid', () async {
+      // arrange
+      final invalidMap = Datamap.from(tMap)..remove('uid');
+      // act
+      const call = LocalUserModel.fromMap;
+      // assert
+      expect(() => call(invalidMap), throwsA(isA<Error>()));
+    });
+  });
+
+  group('toMap', () {
+    test('should return a valid [Datamap] when the model is valid', () async {
+      // arrange
+      // act
+      final result = tUserModel.toMap();
+      // assert
+      expect(result, equals(tMap));
+    });
+  });
+
+  group('copyWith', () {
+    test(
+      'should return a valid [LocalUserModel] with values updated',
+      () async {
+        // arrange
+        // act
+        final result = tUserModel.copyWith(
+          fullName: 'updatedFullName',
+          email: 'updatedEmail',
+        );
+        // assert
+        expect(result, isA<LocalUserModel>());
+        expect(result.fullName, equals('updatedFullName'));
+        expect(result.email, equals('updatedEmail'));
+      },
+    );
   });
 }
