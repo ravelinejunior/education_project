@@ -34,7 +34,7 @@ class LocalUserModel extends LocalUser {
         fullName: '',
         points: 0,
       );
-  LocalUserModel.fromMap(Datamap map)
+  LocalUserModel.fromMap(DataMap map)
       : super(
           uid: map['uid'] as String,
           email: map['email'] as String,
@@ -75,7 +75,7 @@ class LocalUserModel extends LocalUser {
     );
   }
 
-  Datamap toMap() => {
+  DataMap toMap() => {
         'uid': uid,
         'email': email,
         'fullName': fullName,

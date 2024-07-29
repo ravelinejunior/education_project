@@ -9,7 +9,7 @@ import '../../../../fixtures/fixture_reader.dart';
 
 void main() {
   final tUserModel = LocalUserModel.empty();
-  final tMap = jsonDecode(fixture('user_model.json')) as Datamap;
+  final tMap = jsonDecode(fixture('user_model.json')) as DataMap;
 
   test('should be a subclass of LocalUser', () {
     expect(tUserModel, isA<LocalUser>());
@@ -29,7 +29,7 @@ void main() {
 
     test('should throw an [Error] when the map is invalid', () async {
       // arrange
-      final invalidMap = Datamap.from(tMap)..remove('uid');
+      final invalidMap = DataMap.from(tMap)..remove('uid');
       // act
       const call = LocalUserModel.fromMap;
       // assert
