@@ -13,10 +13,13 @@ dependencies:
   cloud_firestore: ^4.15.8
   dartz: ^0.10.1
   equatable: ^2.0.5
+  fake_cloud_firestore: ^2.4.8
   file_picker: 
   firebase_auth: ^4.17.8
+  firebase_auth_mocks: ^0.13.0
   firebase_core: ^2.27.0
   firebase_storage: ^11.6.9
+  firebase_storage_mocks: ^0.6.1
   firebase_ui_auth: ^1.7.0
   flutter:
     sdk: flutter
@@ -24,6 +27,7 @@ dependencies:
   font_awesome_flutter: ^10.7.0
   get_it: 
   google_fonts: ^4.0.4
+  google_sign_in_mocks: ^0.3.0
   iconly: ^1.0.1
   image_picker: 
   intl: 

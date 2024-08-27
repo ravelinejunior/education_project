@@ -20,10 +20,6 @@ class LocalUser extends Equatable {
         email: '',
         points: 0,
         fullName: '',
-        groupId: [],
-        enrolledCourseIds: [],
-        following: [],
-        followers: [],
         bio: '',
         profileImageUrl: '',
       );
