@@ -57,10 +57,35 @@ void main() {
     );
 
     //Expect that the user was created on firestore and authclient
+    final user = await cloudStoreClient
+        .collection('Users')
+        .doc(mockFirebaseAuth.currentUser?.uid)
+        .get();
 
     // assert
     expect(mockFirebaseAuth.currentUser, isNotNull);
     expect(mockFirebaseAuth.currentUser?.displayName, tFullName);
     expect(mockFirebaseAuth.currentUser?.email, tEmail);
+
+    expect(user.exists, isTrue); // user was created on firestore
+  });
+
+  test('[signIn] from remote data source', () async {
+    // arrange
+    await authRemoteDataSource.signUp(
+      email: 'tEmail@email.com',
+      fullName: tFullName,
+      password: tPassword,
+    );
+    await mockFirebaseAuth.signOut();
+
+    // act
+    await authRemoteDataSource.signIn(
+      email: 'tEmail@email.com',
+      password: tPassword,
+    );
+    // assert
+    expect(mockFirebaseAuth.currentUser, isNotNull);
+    expect(mockFirebaseAuth.currentUser?.email, 'tEmail@email.com');
   });
 }
