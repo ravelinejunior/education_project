@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:education_project/core/errors/exceptions.dart';
+import 'package:education_project/core/utils/constants.dart';
 import 'package:education_project/core/utils/typedef.dart';
 import 'package:education_project/src/auth/data/data_source/remote/auth_remote_data_source.dart';
 import 'package:education_project/src/auth/data/model/user_model.dart';
@@ -70,11 +71,11 @@ void main() {
     authClient = MockFirebaseAuth();
     storageClient = MockFirebaseStorage();
     firestoreClient = FakeFirebaseFirestore();
-    documentReference = await firestoreClient.collection('Users').add(
-          tUser.toMap(),
-        );
+    documentReference = firestoreClient.collection('Users').doc();
+    await documentReference.set(
+      tUser.copyWith(uid: documentReference.id).toMap(),
+    );
     mockUser = MockUser()..uid = documentReference.id;
-
     userCredential = MockUserCredential(mockUser);
     authRemoteDataSource = AuthRemoteDataSourceImpl(
       firebaseAuth: authClient,
@@ -99,7 +100,7 @@ void main() {
     });
 
     test(
-      'should throw [ServerException] when [FirebaseAuthException] is throwm',
+      'should throw [ServerException] when [FirebaseAuthException] is thrown',
       () async {
         // arrange
         when(
@@ -114,6 +115,175 @@ void main() {
         expect(() => call(tEmail), throwsA(isA<ServerException>()));
         verify(() => authClient.sendPasswordResetEmail(email: tEmail))
             .called(1);
+        verifyNoMoreInteractions(authClient);
+      },
+    );
+  });
+
+  group('signIn', () {
+    test('should call signIn from [AuthRepository]', () async {
+      // Arrange
+      when(
+        () => authClient.signInWithEmailAndPassword(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenAnswer((_) async => userCredential);
+
+      // Act
+      final result =
+          await authRemoteDataSource.signIn(email: tEmail, password: tPassword);
+
+      // Assert
+      expect(result.uid, userCredential.user?.uid);
+      expect(result.points, 0);
+
+      verify(
+        () => authClient.signInWithEmailAndPassword(
+          email: tEmail,
+          password: tPassword,
+        ),
+      ).called(1);
+      verifyNoMoreInteractions(authClient);
+    });
+
+    test(
+      'should throw [ServerException] when user is null after signing in',
+      () async {
+        // Arrange
+        final emptyUserCredential = MockUserCredential();
+        when(
+          () => authClient.signInWithEmailAndPassword(
+            email: any(named: 'email'),
+            password: any(named: 'password'),
+          ),
+        ).thenAnswer((_) async => emptyUserCredential);
+
+        // Act
+        final result = authRemoteDataSource.signIn;
+
+        // Assert
+        expect(
+          () => result(email: tEmail, password: tPassword),
+          throwsA(isA<ServerException>()),
+        );
+        verify(
+          () => authClient.signInWithEmailAndPassword(
+            email: tEmail,
+            password: tPassword,
+          ),
+        ).called(1);
+        verifyNoMoreInteractions(authClient);
+      },
+    );
+
+    test(
+      'should throw [ServerException] when [FirebaseAuthException] is thrown',
+      () async {
+        // Arrange
+        when(
+          () => authClient.signInWithEmailAndPassword(
+            email: any(named: 'email'),
+            password: any(named: 'password'),
+          ),
+        ).thenThrow(tFirebaseAuthException);
+
+        // Act
+        final call = authRemoteDataSource.signIn;
+
+        // Assert
+        expect(
+          () => call(email: tEmail, password: tPassword),
+          throwsA(isA<ServerException>()),
+        );
+        verify(
+          () => authClient.signInWithEmailAndPassword(
+            email: tEmail,
+            password: tPassword,
+          ),
+        ).called(1);
+        verifyNoMoreInteractions(authClient);
+      },
+    );
+  });
+
+  group('signUp', () {
+    test('should call signUp from [AuthRepository]', () async {
+      // Arrange
+      when(
+        () => authClient.createUserWithEmailAndPassword(
+          email: any(named: 'email'),
+          password: any(named: 'password'),
+        ),
+      ).thenAnswer((_) async => userCredential);
+
+      when(() => userCredential.user?.updateDisplayName(any()))
+          .thenAnswer((_) async {
+        return Future.value();
+      });
+
+      when(() => userCredential.user?.updatePhotoURL(any()))
+          .thenAnswer((_) async {
+        return Future.value();
+      });
+
+      // Act
+      final call = authRemoteDataSource.signUp(
+        email: tEmail,
+        password: tPassword,
+        fullName: tFullname,
+      );
+
+      // Assert
+      expect(call, completes);
+
+      verify(
+        () => authClient.createUserWithEmailAndPassword(
+          email: tEmail,
+          password: tPassword,
+        ),
+      ).called(1);
+
+      await untilCalled(() => userCredential.user?.updateDisplayName(any()));
+      await untilCalled(() => userCredential.user?.updatePhotoURL(any()));
+
+      verify(
+        () => userCredential.user?.updateDisplayName(tFullname),
+      ).called(1);
+
+      verify(
+        () => userCredential.user?.updatePhotoURL(kDefaultAvatar),
+      ).called(1);
+
+      verifyNoMoreInteractions(authClient);
+    });
+
+    test(
+      'should throw [ServerException] when [FirebaseAuthException] is thrown',
+      () async {
+        // Arrange
+        when(
+          () => authClient.createUserWithEmailAndPassword(
+            email: any(named: 'email'),
+            password: any(named: 'password'),
+          ),
+        ).thenThrow(tFirebaseAuthException);
+        // Act
+        final call = authRemoteDataSource.signUp;
+
+        // Assert
+        expect(
+          () => call(email: tEmail, password: tPassword, fullName: tFullname),
+          throwsA(isA<ServerException>()),
+        );
+
+        verify(
+          () => authClient.createUserWithEmailAndPassword(
+            email: tEmail,
+            password: tPassword,
+          ),
+        ).called(1);
+
         verifyNoMoreInteractions(authClient);
       },
     );
