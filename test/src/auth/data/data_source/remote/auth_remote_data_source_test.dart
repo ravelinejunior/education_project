@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:education_project/core/enum/update_user_enum.dart';
 import 'package:education_project/core/errors/exceptions.dart';
 import 'package:education_project/core/utils/constants.dart';
 import 'package:education_project/core/utils/typedef.dart';
@@ -55,6 +58,8 @@ class MockUserCredential extends Mock implements UserCredential {
     }
   }
 }
+
+class MockAuthCredential extends Mock implements AuthCredential {}
 
 void main() {
   late FirebaseAuth authClient;
@@ -285,6 +290,111 @@ void main() {
         ).called(1);
 
         verifyNoMoreInteractions(authClient);
+      },
+    );
+  });
+
+  group('updateUser', () {
+    setUp(() {
+      registerFallbackValue(MockAuthCredential());
+    });
+    test('should call updateUser from [AuthRepository]', () async {
+      // Arrange
+      when(
+        () => mockUser.updateDisplayName(any()),
+      ).thenAnswer((_) async {
+        return Future.value();
+      });
+
+      // Act
+      await authRemoteDataSource.updateUser(
+        action: UpdateUserAction.displayName,
+        userData: tFullname,
+      );
+
+      final user = await documentReference.get();
+
+      expect(user.data()?['fullName'], tFullname);
+
+      // Assert
+      verify(
+        () => mockUser.updateDisplayName(tFullname),
+      ).called(1);
+
+      verifyNever(() => mockUser.updatePassword(any()));
+      verifyNever(() => mockUser.updatePhotoURL(any()));
+      // ignore: deprecated_member_use
+      verifyNever(() => mockUser.updateEmail(any()));
+    });
+
+    test(
+      'should throw [ServerException] when [FirebaseAuthException] is thrown',
+      () async {
+        // Arrange
+        when(
+          () => mockUser.updateDisplayName(any()),
+        ).thenThrow(tFirebaseAuthException);
+
+        // Act
+        final call = authRemoteDataSource.updateUser;
+
+        // Assert
+        expect(
+          () => call(
+            action: UpdateUserAction.displayName,
+            userData: tFullname,
+          ),
+          throwsA(isA<ServerException>()),
+        );
+
+        verify(
+          () => mockUser.updateDisplayName(tFullname),
+        ).called(1);
+      },
+    );
+
+    test(
+      'should update user password succesfully when no [Exception] '
+      'is thrown',
+      () async {
+        when(
+          () => mockUser.updatePassword(
+            any(),
+          ),
+        ).thenAnswer(
+          (_) async => Future.value(),
+        );
+
+        when(
+          () => mockUser.reauthenticateWithCredential(
+            any(),
+          ),
+        ).thenAnswer(
+          (_) async => userCredential,
+        );
+
+        when(
+          () => mockUser.email,
+        ).thenReturn(tEmail);
+
+        await authRemoteDataSource.updateUser(
+          action: UpdateUserAction.password,
+          userData: jsonEncode({
+            'oldPassword': 'oldPassword',
+            'newPassword': tPassword,
+          }),
+        );
+
+        verify(() => mockUser.updatePassword(tPassword));
+
+        verifyNever(() => mockUser.updateDisplayName(any()));
+        verifyNever(() => mockUser.updatePhotoURL(any()));
+        // ignore: deprecated_member_use
+        verifyNever(() => mockUser.updateEmail(any()));
+
+        final user = await documentReference.get();
+
+        expect(user.data()?['password'], null);
       },
     );
   });
