@@ -7,6 +7,7 @@ import 'package:education_project/src/auth/domain/use_cases/forgot_password_use_
 import 'package:education_project/src/auth/domain/use_cases/sign_out_use_case.dart';
 import 'package:education_project/src/auth/domain/use_cases/signin_use_case.dart';
 import 'package:education_project/src/auth/domain/use_cases/signup_use_case.dart';
+import 'package:education_project/src/auth/domain/use_cases/update_user_use_case.dart';
 import 'package:equatable/equatable.dart';
 
 part 'auth_event.dart';
@@ -18,10 +19,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required SignupUseCase signupUseCase,
     required ForgotPasswordUseCase forgotPasswordUseCase,
     required SignOutUseCase signOutUseCase,
+    required UpdateUserUseCase updateUserUseCase
   })  : _signinUseCase = signinUseCase,
         _signupUseCase = signupUseCase,
         _forgotPasswordUseCase = forgotPasswordUseCase,
         _signOutUseCase = signOutUseCase,
+        _updateUserUseCase = updateUserUseCase,
         super(const AuthInitialState()) {
     on<AuthEvent>((event, emit) {});
   }
@@ -30,4 +33,5 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final SignupUseCase _signupUseCase;
   final ForgotPasswordUseCase _forgotPasswordUseCase;
   final SignOutUseCase _signOutUseCase;
+  final UpdateUserUseCase _updateUserUseCase;
 }

@@ -61,5 +61,3 @@ final class AuthForgotPasswordState extends AuthState {
   @override
   List<Object> get props => [];
 }
-
-
