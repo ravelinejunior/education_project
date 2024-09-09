@@ -22,9 +22,20 @@ class UpdateUserParams extends Equatable {
     required this.userData,
   });
 
+  factory UpdateUserParams.empty() {
+    return const UpdateUserParams(
+      action: UpdateUserAction.displayName,
+      userData: {
+        'name': 'Name',
+      },
+    );
+  }
+
   final UpdateUserAction action;
   final dynamic userData;
 
   @override
   List<Object?> get props => [action, userData];
+
+  
 }
