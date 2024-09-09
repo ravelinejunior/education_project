@@ -1,16 +1,15 @@
 import 'package:education_project/core/use_cases/use_case.dart';
 import 'package:education_project/core/utils/typedef.dart';
-import 'package:education_project/src/auth/domain/entity/local_user.dart';
 import 'package:education_project/src/auth/domain/repository/auth_repository.dart';
 import 'package:equatable/equatable.dart';
 
-class SignupUseCase extends UseCaseWithParams<LocalUser, SignUpParams> {
+class SignupUseCase extends UseCaseWithParams<void, SignUpParams> {
   const SignupUseCase(this._repo);
 
   final AuthRepository _repo;
 
   @override
-  ResultFuture<LocalUser> call(SignUpParams params) => _repo.signUp(
+  ResultFuture<void> call(SignUpParams params) => _repo.signUp(
         email: params.email,
         password: params.password,
         fullName: params.fullName,

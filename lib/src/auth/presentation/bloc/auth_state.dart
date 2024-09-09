@@ -26,7 +26,7 @@ final class AuthSignedInState extends AuthState {
   List<Object> get props => [user];
 }
 
-final class AuthSignedUpState extends AuthState{
+final class AuthSignedUpState extends AuthState {
   const AuthSignedUpState();
 
   @override
@@ -40,7 +40,7 @@ final class AuthSignedOutState extends AuthState {
   List<Object> get props => [];
 }
 
-final class AuthUserUpdate extends AuthState{
+final class AuthUserUpdate extends AuthState {
   const AuthUserUpdate();
 
   @override

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:education_project/core/enum/update_user_enum.dart';
 import 'package:education_project/core/use_cases/use_case.dart';
 import 'package:education_project/core/utils/typedef.dart';
@@ -23,11 +25,16 @@ class UpdateUserParams extends Equatable {
   });
 
   factory UpdateUserParams.empty() {
-    return const UpdateUserParams(
+    return UpdateUserParams(
       action: UpdateUserAction.displayName,
-      userData: {
-        'name': 'Name',
-      },
+      userData: jsonEncode(
+        {
+          'name': 'Name',
+          'displayName': 'DisplayName',
+          'photoUrl': 'PhotoUrl',
+          'email': 'Email',
+        },
+      ),
     );
   }
 
@@ -36,6 +43,4 @@ class UpdateUserParams extends Equatable {
 
   @override
   List<Object?> get props => [action, userData];
-
-  
 }

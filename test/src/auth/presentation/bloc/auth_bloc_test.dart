@@ -125,5 +125,201 @@ void main() {
     );
   });
 
+  group('[AuthBloc] SignUpEvent', () {
+    blocTest<AuthBloc, AuthState>(
+      'emits [AuthLoading,AuthSignedUpState] when [SignUpEvent] is added.',
+      build: () {
+        when(() => signupUseCase(tSignUpParams)).thenAnswer(
+          (_) async => const Right(null),
+        );
+        return authBloc;
+      },
+      act: (bloc) => bloc.add(
+        SignUpEvent(
+          email: tSignUpParams.email,
+          password: tSignUpParams.password,
+          fullName: tSignUpParams.fullName,
+        ),
+      ),
+      expect: () => [
+        const AuthLoadingState(),
+        const AuthSignedUpState(),
+      ],
+      verify: (_) {
+        verify(() => signupUseCase(tSignUpParams)).called(1);
+        verifyNoMoreInteractions(signupUseCase);
+      },
+    );
+
+    blocTest<AuthBloc, AuthState>(
+      'emits [AuthLoading,AuthErrorState] when [SignUpEvent] fails.',
+      build: () {
+        when(() => signupUseCase(tSignUpParams)).thenAnswer(
+          (_) async => const Left(tServerFailure),
+        );
+        return authBloc;
+      },
+      act: (bloc) => bloc.add(
+        SignUpEvent(
+          email: tSignUpParams.email,
+          password: tSignUpParams.password,
+          fullName: tSignUpParams.fullName,
+        ),
+      ),
+      expect: () => [
+        const AuthLoadingState(),
+        AuthErrorState(tServerFailure.message),
+      ],
+      verify: (_) {
+        verify(() => signupUseCase(tSignUpParams)).called(1);
+        verifyNoMoreInteractions(signupUseCase);
+      },
+    );
+  });
+
+  group('[AuthBloc] SignOutEvent', () {
+    blocTest<AuthBloc, AuthState>(
+      'emits [AuthLoading,AuthSignedOutState] when [SignOutEvent] is added.',
+      build: () {
+        when(() => signOutUseCase()).thenAnswer(
+          (_) async => const Right(null),
+        );
+        return authBloc;
+      },
+      act: (bloc) => bloc.add(
+        const SignOutEvent(),
+      ),
+      expect: () => [
+        const AuthLoadingState(),
+        const AuthSignedOutState(),
+      ],
+      verify: (_) {
+        verify(() => signOutUseCase()).called(1);
+        verifyNoMoreInteractions(signOutUseCase);
+      },
+    );
+
+    blocTest<AuthBloc, AuthState>(
+      'emits [AuthLoading,AuthErrorState] when [SignOutEvent] fails.',
+      build: () {
+        when(() => signOutUseCase()).thenAnswer(
+          (_) async => const Left(tServerFailure),
+        );
+        return authBloc;
+      },
+      act: (bloc) => bloc.add(
+        const SignOutEvent(),
+      ),
+      expect: () => [
+        const AuthLoadingState(),
+        AuthErrorState(tServerFailure.message),
+      ],
+      verify: (_) {
+        verify(() => signOutUseCase()).called(1);
+        verifyNoMoreInteractions(signOutUseCase);
+      },
+    );
+  });
+
+  group('[AuthBloc] UpdateUserEvent', () {
+    blocTest<AuthBloc, AuthState>(
+      'emits [AuthLoading,AuthUpdatedUserState] when [UpdateUserEvent] '
+      'is added. ',
+      build: () {
+        when(() => updateUserUseCase(tUpdateUserParams)).thenAnswer(
+          (_) async => const Right(null),
+        );
+        return authBloc;
+      },
+      act: (bloc) => bloc.add(
+        UpdateUserEvent(
+          action: tUpdateUserParams.action,
+          userData: tUpdateUserParams.userData,
+        ),
+      ),
+      expect: () => [
+        const AuthLoadingState(),
+        const AuthUserUpdate(),
+      ],
+      verify: (_) {
+        verify(() => updateUserUseCase(tUpdateUserParams)).called(1);
+        verifyNoMoreInteractions(updateUserUseCase);
+      },
+    );
+
+    blocTest<AuthBloc, AuthState>(
+      'emits [AuthLoading,AuthErrorState] when [UpdateUserEvent] fails.',
+      build: () {
+        when(() => updateUserUseCase(tUpdateUserParams)).thenAnswer(
+          (_) async => const Left(tServerFailure),
+        );
+        return authBloc;
+      },
+      act: (bloc) => bloc.add(
+        UpdateUserEvent(
+          action: tUpdateUserParams.action,
+          userData: tUpdateUserParams.userData,
+        ),
+      ),
+      expect: () => [
+        const AuthLoadingState(),
+        AuthErrorState(tServerFailure.message),
+      ],
+      verify: (_) {
+        verify(() => updateUserUseCase(tUpdateUserParams)).called(1);
+        verifyNoMoreInteractions(updateUserUseCase);
+      },
+    );
+  });
+
+  group('[AuthBloc] ForgotPasswordEvent', () {
+    blocTest<AuthBloc, AuthState>(
+      'emits [AuthLoading,AuthForgotPasswordState] when [ForgotPasswordEvent] '
+      'is added. ',
+      build: () {
+        when(() => forgotPasswordUseCase(tSignInParams.email)).thenAnswer(
+          (_) async => const Right(null),
+        );
+        return authBloc;
+      },
+      act: (bloc) => bloc.add(
+        ForgotPasswordEvent(
+          email: tSignInParams.email,
+        ),
+      ),
+      expect: () => [
+        const AuthLoadingState(),
+        const AuthForgotPasswordState(),
+      ],
+      verify: (_) {
+        verify(() => forgotPasswordUseCase(tSignInParams.email)).called(1);
+        verifyNoMoreInteractions(forgotPasswordUseCase);
+      },
+    );
+
+    blocTest<AuthBloc, AuthState>(
+      'emits [AuthLoading,AuthErrorState] when [ForgotPasswordEvent] fails.',
+      build: () {
+        when(() => forgotPasswordUseCase(tSignInParams.email)).thenAnswer(
+          (_) async => const Left(tServerFailure),
+        );
+        return authBloc;
+      },
+      act: (bloc) => bloc.add(
+        ForgotPasswordEvent(
+          email: tSignInParams.email,
+        ),
+      ),
+      expect: () => [
+        const AuthLoadingState(),
+        AuthErrorState(tServerFailure.message),
+      ],
+      verify: (_) {
+        verify(() => forgotPasswordUseCase(tSignInParams.email)).called(1);
+        verifyNoMoreInteractions(forgotPasswordUseCase);
+      },
+    );
+  });
+
   tearDown(() => authBloc.close());
 }

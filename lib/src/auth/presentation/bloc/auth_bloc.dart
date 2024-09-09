@@ -31,6 +31,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     });
 
     on<SignInEvent>(_signInHandler);
+    on<SignUpEvent>(_signUpHandler);
+    on<ForgotPasswordEvent>((event, emit) {
+      _forgotPasswordHandler(event.email, emit);
+    },);
+    on<SignOutEvent>(_signOutHandler);
+    on<UpdateUserEvent>(_updateUserHandler);
   }
 
   final SigninUseCase _signinUseCase;
@@ -42,37 +48,78 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _signInHandler(
     SignInEvent event,
     Emitter<AuthState> emit,
-  )async {
-     final result = await _signinUseCase(
-        SignInParams(
-          email: event.email,
-          password: event.password,
-        ),
-      );
+  ) async {
+    final result = await _signinUseCase(
+      SignInParams(
+        email: event.email,
+        password: event.password,
+      ),
+    );
 
-      result.fold(
-        (failure) => emit(AuthErrorState(failure.message)),
-        (user) => emit(AuthSignedInState(user)),
-      );
+    result.fold(
+      (failure) => emit(AuthErrorState(failure.message)),
+      (user) => emit(AuthSignedInState(user)),
+    );
   }
 
   Future<void> _signUpHandler(
     SignUpEvent event,
     Emitter<AuthState> emit,
-  ) async{}
+  ) async {
+    final result = await _signupUseCase(
+      SignUpParams(
+        email: event.email,
+        password: event.password,
+        fullName: event.fullName,
+      ),
+    );
+
+    result.fold(
+      (failure) => emit(AuthErrorState(failure.message)),
+      (_) => emit(const AuthSignedUpState()),
+    );
+  }
 
   Future<void> _forgotPasswordHandler(
-    ForgotPasswordEvent event,
+    String email,
     Emitter<AuthState> emit,
-  )async {}
+  ) async {
+    final result = await _forgotPasswordUseCase(
+      email,
+    );
+
+    result.fold(
+      (failure) => emit(AuthErrorState(failure.message)),
+      (_) => emit(const AuthForgotPasswordState()),
+    );
+  }
 
   Future<void> _signOutHandler(
     SignOutEvent event,
     Emitter<AuthState> emit,
-  )async {}
+  ) async {
+    final result = await _signOutUseCase();
+
+    result.fold(
+      (failure) => emit(AuthErrorState(failure.message)),
+      (_) => emit(const AuthSignedOutState()),
+    );
+  }
 
   Future<void> _updateUserHandler(
     UpdateUserEvent event,
     Emitter<AuthState> emit,
-  ) async{}
+  ) async {
+    final result = await _updateUserUseCase(
+      UpdateUserParams(
+        action: event.action,
+        userData: event.userData,
+      ),
+    );
+
+    result.fold(
+      (failure) => emit(AuthErrorState(failure.message)),
+      (_) => emit(const AuthUserUpdate()),
+    );
+  }
 }
