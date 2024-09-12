@@ -6,6 +6,7 @@ import 'package:education_project/src/on_boarding/presentation/on_boarding/on_bo
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(

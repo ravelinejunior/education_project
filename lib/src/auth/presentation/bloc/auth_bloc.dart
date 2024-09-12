@@ -14,13 +14,13 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc(
-      {required SigninUseCase signinUseCase,
-      required SignupUseCase signupUseCase,
-      required ForgotPasswordUseCase forgotPasswordUseCase,
-      required SignOutUseCase signOutUseCase,
-      required UpdateUserUseCase updateUserUseCase})
-      : _signinUseCase = signinUseCase,
+  AuthBloc({
+    required SigninUseCase signinUseCase,
+    required SignupUseCase signupUseCase,
+    required ForgotPasswordUseCase forgotPasswordUseCase,
+    required SignOutUseCase signOutUseCase,
+    required UpdateUserUseCase updateUserUseCase,
+  })  : _signinUseCase = signinUseCase,
         _signupUseCase = signupUseCase,
         _forgotPasswordUseCase = forgotPasswordUseCase,
         _signOutUseCase = signOutUseCase,
@@ -32,9 +32,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     on<SignInEvent>(_signInHandler);
     on<SignUpEvent>(_signUpHandler);
-    on<ForgotPasswordEvent>((event, emit) {
-      _forgotPasswordHandler(event.email, emit);
-    },);
+    on<ForgotPasswordEvent>(
+      (event, emit) {
+        _forgotPasswordHandler(event.email, emit);
+      },
+    );
     on<SignOutEvent>(_signOutHandler);
     on<UpdateUserEvent>(_updateUserHandler);
   }
