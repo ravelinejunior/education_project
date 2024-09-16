@@ -1,17 +1,65 @@
 import 'package:education_project/core/common/views/page_under_construction.dart';
+import 'package:education_project/core/extensions/context_extensions.dart';
 import 'package:education_project/core/services/injection_container.dart';
+import 'package:education_project/src/auth/data/model/user_model.dart';
+import 'package:education_project/src/auth/presentation/bloc/auth_bloc.dart';
+import 'package:education_project/src/auth/presentation/views/sign_in_screen.dart';
+import 'package:education_project/src/auth/presentation/views/sign_up_screen.dart';
+import 'package:education_project/src/dashboard/presentation/views/dashboard.dart';
+import 'package:education_project/src/on_boarding/data/datasource/local_data_source.dart';
 import 'package:education_project/src/on_boarding/presentation/on_boarding/cubit/on_boarding_cubit.dart';
 import 'package:education_project/src/on_boarding/presentation/on_boarding/on_boarding_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
     case OnBoardingScreen.routeName:
+      final prefs = sl<SharedPreferences>();
       return _pageBuilder(
-        (context) => BlocProvider(
-          create: (context) => sl<OnBoardingCubit>(),
-          child: const OnBoardingScreen(),
+        (context) {
+          if (prefs.getBool(kFirstTimerKey) ?? true) {
+            return BlocProvider(
+              create: (context) => sl<OnBoardingCubit>(),
+              child: const OnBoardingScreen(),
+            );
+          } else if (sl<FirebaseAuth>().currentUser != null) {
+            final user = sl<FirebaseAuth>().currentUser!;
+            final localUser = LocalUserModel(
+              uid: user.uid,
+              email: user.email ?? '',
+              fullName: user.displayName ?? '',
+              points: 0,
+            );
+
+            context.userProvider.initUser(localUser);
+            return const Dashboard();
+          }
+
+          return BlocProvider(
+            create: (_) => sl<AuthBloc>(),
+            child: const SignInScreen(),
+          );
+        },
+        settings: settings,
+      );
+
+    case SignInScreen.routeName:
+      return _pageBuilder(
+        (_) => BlocProvider(
+          create: (context) => sl<AuthBloc>(),
+          child: const SignInScreen(),
+        ),
+        settings: settings,
+      );
+
+    case SignUpScreen.routeName:
+      return _pageBuilder(
+        (_) => BlocProvider(
+          create: (context) => sl<AuthBloc>(),
+          child: const SignInScreen(),
         ),
         settings: settings,
       );
