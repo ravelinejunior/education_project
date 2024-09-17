@@ -13,7 +13,7 @@ import 'package:education_project/src/on_boarding/data/repository_impl/on_boardi
 import 'package:education_project/src/on_boarding/domain/repository/on_boarding_repository.dart';
 import 'package:education_project/src/on_boarding/domain/use_cases/cache_user_first_timer.dart';
 import 'package:education_project/src/on_boarding/domain/use_cases/check_user_is_first_timer.dart';
-import 'package:education_project/src/on_boarding/presentation/on_boarding/cubit/on_boarding_cubit.dart';
+import 'package:education_project/src/on_boarding/presentation/cubit/on_boarding_cubit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';

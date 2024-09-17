@@ -5,10 +5,10 @@ import 'package:education_project/src/auth/data/model/user_model.dart';
 import 'package:education_project/src/auth/presentation/bloc/auth_bloc.dart';
 import 'package:education_project/src/auth/presentation/views/sign_in_screen.dart';
 import 'package:education_project/src/auth/presentation/views/sign_up_screen.dart';
-import 'package:education_project/src/dashboard/presentation/views/dashboard.dart';
+import 'package:education_project/src/dashboard/presentation/views/dashboard_screen.dart';
 import 'package:education_project/src/on_boarding/data/datasource/local_data_source.dart';
-import 'package:education_project/src/on_boarding/presentation/on_boarding/cubit/on_boarding_cubit.dart';
-import 'package:education_project/src/on_boarding/presentation/on_boarding/on_boarding_screen.dart';
+import 'package:education_project/src/on_boarding/presentation/cubit/on_boarding_cubit.dart';
+import 'package:education_project/src/on_boarding/presentation/on_boarding_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,7 +35,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
             );
 
             context.userProvider.initUser(localUser);
-            return const Dashboard();
+            return const DashboardScreen();
           }
 
           return BlocProvider(
@@ -59,7 +59,15 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _pageBuilder(
         (_) => BlocProvider(
           create: (context) => sl<AuthBloc>(),
-          child: const SignInScreen(),
+          child: const SignUpScreen(),
+        ),
+        settings: settings,
+      );
+    case DashboardScreen.routeName:
+      return _pageBuilder(
+        (_) => BlocProvider(
+          create: (context) => sl<AuthBloc>(),
+          child: const SignUpScreen(),
         ),
         settings: settings,
       );

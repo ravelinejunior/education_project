@@ -1,7 +1,9 @@
 import 'package:education_project/core/extensions/context_extensions.dart';
 import 'package:education_project/src/on_boarding/domain/models/page_content_model.dart';
+import 'package:education_project/src/on_boarding/presentation/cubit/on_boarding_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class OnBoardingPage extends StatelessWidget {
   const OnBoardingPage({
@@ -64,7 +66,9 @@ class OnBoardingPage extends StatelessWidget {
                         context.theme.buttonTheme.colorScheme?.onPrimary,
                     minimumSize: Size(context.width * 0.6, 50),
                   ),
-                  onPressed: () async {},
+                  onPressed: () async {
+                    await context.read<OnBoardingCubit>().cacheFirstTimer();
+                  },
                   child: Text(
                     'Get Started',
                     style: GoogleFonts.montserrat(
