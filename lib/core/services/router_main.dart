@@ -53,7 +53,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _pageBuilder(
         (_) => BlocProvider(
           create: (context) => sl<AuthBloc>(),
-          child: const SignUpScreen(),
+          child: const DashboardScreen(),
         ),
         settings: settings,
       );

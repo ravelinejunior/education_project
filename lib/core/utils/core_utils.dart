@@ -13,7 +13,7 @@ class CoreUtils {
             message,
             style: GoogleFonts.roboto(
               color: Colors.white,
-              fontSize: 16,
+              fontSize: 12,
               fontWeight: FontWeight.bold,
             ),
           ),

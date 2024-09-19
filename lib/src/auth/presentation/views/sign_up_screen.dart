@@ -7,6 +7,7 @@ import 'package:education_project/src/auth/data/model/user_model.dart';
 import 'package:education_project/src/auth/presentation/bloc/auth_bloc.dart';
 import 'package:education_project/src/auth/presentation/views/sign_in_screen.dart';
 import 'package:education_project/src/dashboard/presentation/views/dashboard_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -24,6 +25,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _passwordConfirmController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +34,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
         listener: (context, state) {
           if (state is AuthErrorState) {
             CoreUtils.showSnackBar(context, state.message);
+          } else if (state is AuthSignedUpState) {
+            context.read<AuthBloc>().add(
+                  SignInEvent(
+                    email: _emailController.text.trim(),
+                    password: _passwordController.text.trim(),
+                  ),
+                );
           } else if (state is AuthSignedInState) {
             context.read<UserProvider>().initUser(state.user as LocalUserModel);
             Navigator.pushReplacementNamed(context, DashboardScreen.routeName);
@@ -101,7 +110,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   return 'Please enter your password';
                                 }
                                 if (value.length < 6) {
-                                  return 'Pass must be at least 6 characters';
+                                  return 'Password must be at least 6 characters';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 16),
+                            CustomTextField(
+                              controller: _passwordConfirmController,
+                              labelText: 'Confirm Password',
+                              hintText: 'Confirm your password',
+                              prefixIcon: const Icon(Icons.lock),
+                              isPasswordField: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please confirm your password';
+                                }
+                                if (value != _passwordController.text) {
+                                  return 'Passwords do not match';
                                 }
                                 return null;
                               },
@@ -112,7 +138,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             else
                               RoundedButton(
                                 onPressed: () {
-                                  if (_formKey.currentState!.validate()) {}
+                                  if (_formKey.currentState!.validate()) {
+                                    FocusManager.instance.primaryFocus
+                                        ?.unfocus();
+                                    FirebaseAuth.instance.currentUser?.reload();
+                                    final formattedEmail =
+                                        _emailController.text.trim();
+                                    final formattedName =
+                                        _nameController.text.trim();
+                                    final formattedPassword =
+                                        _passwordController.text.trim();
+
+                                    context.read<AuthBloc>().add(
+                                          SignUpEvent(
+                                            email: formattedEmail,
+                                            password: formattedPassword,
+                                            fullName: formattedName,
+                                          ),
+                                        );
+                                  }
                                 },
                                 text: 'Sign Up',
                               ),
@@ -163,6 +207,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _passwordConfirmController.dispose();
     super.dispose();
   }
 }

@@ -8,6 +8,7 @@ import 'package:education_project/src/auth/data/model/user_model.dart';
 import 'package:education_project/src/auth/presentation/bloc/auth_bloc.dart';
 import 'package:education_project/src/auth/presentation/views/sign_up_screen.dart';
 import 'package:education_project/src/dashboard/presentation/views/dashboard_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -128,9 +129,9 @@ class _SignInScreenState extends State<SignInScreen> {
                               children: [
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.pushReplacementNamed(
+                                    Navigator.pushNamed(
                                       context,
-                                      SignUpScreen.routeName,
+                                      '/forgot_password',
                                     );
                                   },
                                   style: TextButton.styleFrom(),
@@ -150,7 +151,23 @@ class _SignInScreenState extends State<SignInScreen> {
                             else
                               RoundedButton(
                                 onPressed: () {
-                                  if (_formKey.currentState!.validate()) {}
+                                  if (_formKey.currentState!.validate()) {
+                                    FocusManager.instance.primaryFocus
+                                        ?.unfocus();
+                                    FirebaseAuth.instance.currentUser?.reload();
+                                    final formattedEmail =
+                                        _emailController.text.trim();
+
+                                    final formattedPassword =
+                                        _passwordController.text.trim();
+
+                                    context.read<AuthBloc>().add(
+                                          SignInEvent(
+                                            email: formattedEmail,
+                                            password: formattedPassword,
+                                          ),
+                                        );
+                                  }
                                 },
                                 text: 'Sign In',
                               ),
