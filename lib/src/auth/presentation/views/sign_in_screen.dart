@@ -1,5 +1,7 @@
 import 'package:education_project/core/common/app/providers/user_provider.dart';
+import 'package:education_project/core/common/views/loading_view.dart';
 import 'package:education_project/core/common/widgets/custom_text_field.dart';
+import 'package:education_project/core/common/widgets/rounded_button.dart';
 import 'package:education_project/core/utils/constants.dart';
 import 'package:education_project/core/utils/core_utils.dart';
 import 'package:education_project/src/auth/data/model/user_model.dart';
@@ -37,134 +39,125 @@ class _SignInScreenState extends State<SignInScreen> {
         },
         builder: (context, state) {
           return SafeArea(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        kSignInHeaderMessage,
-                        style: GoogleFonts.lato(
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
+            child: Center(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          kSignInHeaderMessage,
+                          style: GoogleFonts.lato(
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 48),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Sign in to your account',
-                            style: GoogleFonts.lato(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          TextButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    SignUpScreen.routeName,
-                                  );
-                                },
-                                style: TextButton.styleFrom(),
-                                child: Text(
-                                  'Register Account?',
-                                  style: GoogleFonts.lato(
-                                    color: Colors.blue,
-                                    fontWeight: FontWeight.bold, 
-                                  ),
-                                ),
+                        const SizedBox(height: 48),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Sign in to your account',
+                              style: GoogleFonts.lato(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
                               ),
-                        ],
-                      ),
-                      const SizedBox(height: 32),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          CustomTextField(
-                            controller: _emailController,
-                            labelText: 'Email Address',
-                            hintText: 'Enter your email',
-                            prefixIcon: const Icon(Icons.email),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your email';
-                              }
-                              if (!value.contains('@')) {
-                                return 'Please enter a valid email';
-                              }
-                              return null;
-                            },
-                           
-                          ),
-                          const SizedBox(height: 16),
-                          CustomTextField(
-                            controller: _passwordController,
-                            labelText: 'Password',
-                            hintText: 'Enter your password',
-                            prefixIcon: const Icon(Icons.lock),
-                            isPasswordField: true,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your password';
-                              }
-                              if (value.length < 6) {
-                                return 'Password must be at least 6 characters';
-                              }
-                              return null;
-                            },
-                          ),
-                          const SizedBox(height: 20),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    '/forgot_password',
-                                  );
-                                },
-                                style: TextButton.styleFrom(),
-                                child: Text(
-                                  'Forgot Password?',
-                                  style: GoogleFonts.lato(
-                                    color: Colors.blue,
-                                    fontWeight: FontWeight.bold, 
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-                          ElevatedButton(
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {}
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                              shape: const StadiumBorder(),
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(16),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  SignUpScreen.routeName,
+                                );
+                              },
+                              style: TextButton.styleFrom(),
                               child: Text(
-                                'Sign In',
+                                'Register Account?',
                                 style: GoogleFonts.lato(
-                                  color: Colors.white,
+                                  color: Colors.blue,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                          ],
+                        ),
+                        const SizedBox(height: 32),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            CustomTextField(
+                              controller: _emailController,
+                              labelText: 'Email Address',
+                              hintText: 'Enter your email',
+                              prefixIcon: const Icon(Icons.email),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your email';
+                                }
+                                if (!value.contains('@')) {
+                                  return 'Please enter a valid email';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 16),
+                            CustomTextField(
+                              controller: _passwordController,
+                              labelText: 'Password',
+                              hintText: 'Enter your password',
+                              prefixIcon: const Icon(Icons.lock),
+                              isPasswordField: true,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your password';
+                                }
+                                if (value.length < 6) {
+                                  return 'Password must be at least 6 characters';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 20),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pushReplacementNamed(
+                                      context,
+                                      SignUpScreen.routeName,
+                                    );
+                                  },
+                                  style: TextButton.styleFrom(),
+                                  child: Text(
+                                    'Forgot Password?',
+                                    style: GoogleFonts.lato(
+                                      color: Colors.blue,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+                            if (state is AuthLoadingState)
+                              const LoadingView()
+                            else
+                              RoundedButton(
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {}
+                                },
+                                text: 'Sign In',
+                              ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

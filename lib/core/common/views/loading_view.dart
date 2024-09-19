@@ -1,4 +1,3 @@
-import 'package:education_project/core/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
 
 class LoadingView extends StatelessWidget {
@@ -6,11 +5,11 @@ class LoadingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
+    return const Material(
       type: MaterialType.transparency,
       child: Center(
         child: CircularProgressIndicator(
-          color: context.theme.colorScheme.secondary,
+          color: Colors.blue,
         ),
       ),
     );
