@@ -67,11 +67,27 @@ class TabNavigator extends ChangeNotifier {
     notifyListeners();
   }
 
-  void pushAndRemoveUntil(TabItem page){
+  void pushAndRemoveUntil(TabItem page) {
     _navigationStack
       ..clear()
       ..add(page);
     notifyListeners();
+  }
+}
+
+class TabNavigatorProvider extends InheritedNotifier<TabNavigator> {
+  const TabNavigatorProvider({
+    required this.navigator,
+    required super.child,
+    super.key,
+  }) : super(notifier: navigator);
+
+  final TabNavigator navigator;
+
+  static TabNavigator of(BuildContext context) {
+    return context
+        .dependOnInheritedWidgetOfExactType<TabNavigatorProvider>()!
+        .navigator;
   }
 }
 
