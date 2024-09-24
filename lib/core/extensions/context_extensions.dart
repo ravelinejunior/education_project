@@ -1,3 +1,4 @@
+import 'package:education_project/core/common/app/providers/tab_navigator.dart';
 import 'package:education_project/core/common/app/providers/user_provider.dart';
 import 'package:education_project/src/auth/data/model/user_model.dart';
 import 'package:flutter/material.dart';
@@ -15,4 +16,11 @@ extension ContextExtension on BuildContext {
   UserProvider get userProvider => read<UserProvider>();
 
   LocalUserModel? get currentUser => userProvider.user;
+
+  TabNavigator get tabNavigator => read<TabNavigatorProvider>().navigator;
+  void pop() => tabNavigator.pop();
+
+  void push(Widget page) => tabNavigator.push(page);
+
+  void popUntil(Widget page) => tabNavigator.popUntil(TabItem(child: page));
 }

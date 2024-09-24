@@ -34,8 +34,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
       onTapOutside: (event) {
         FocusScope.of(context).unfocus();
       },
-      // ignore: avoid_bool_literals_in_conditional_expressions
       obscureText:
+          // ignore: avoid_bool_literals_in_conditional_expressions
           widget.isPasswordField && _obscureText ? _obscureText : false,
       keyboardType: widget.keyboardType,
       cursorColor: Colors.grey,

@@ -23,7 +23,55 @@ class DashboardController extends ChangeNotifier {
     ChangeNotifierProvider(
       create: (context) => TabNavigator(
         TabItem(
-          child: Container(),
+          child:  const SizedBox(
+            child: Center(
+              child: Text(
+                'Home',
+              ),
+            ),
+          ),
+        ),
+      ),
+      child: const PersistentView(),
+    ),
+    ChangeNotifierProvider(
+      create: (context) => TabNavigator(
+        TabItem(
+          child:  const SizedBox(
+            child: Center(
+              child: Text(
+                'Materials',
+              ),
+            ),
+          ),
+        ),
+      ),
+      child: const PersistentView(),
+    ),
+    ChangeNotifierProvider(
+      create: (context) => TabNavigator(
+        TabItem(
+          child:  const SizedBox(
+            child: Center(
+              child: Text(
+                'Chat',
+              ),
+            ),
+          ),
+        ),
+      ),
+      child: const PersistentView(),
+    ),
+    ChangeNotifierProvider(
+      create: (context) => TabNavigator(
+        TabItem(
+          child:  const SizedBox(
+            child: Center(
+              child: Text(
+                'Profile',
+              ),
+            ),
+          ),
         ),
       ),
       child: const PersistentView(),
@@ -31,7 +79,7 @@ class DashboardController extends ChangeNotifier {
   ];
 
   List<Widget> get screens => _screens;
-  int _currentIndex = 3;
+  int _currentIndex = 0;
 
   int get currentIndex => _currentIndex;
 
