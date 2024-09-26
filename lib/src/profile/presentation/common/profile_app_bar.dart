@@ -13,7 +13,8 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       backgroundColor: Theme.of(context).colorScheme.surface,
       actions: [
-        PopupMenuButton(
+        PopupMenuButton<void>(
+          clipBehavior:  Clip.antiAlias,
           offset: const Offset(0, 36),
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
@@ -31,6 +32,7 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
               onTap: () => CoreUtils.showSnackBar(context, 'Edit Profile'),
             ),
+            const PopupMenuDivider(),
             PopupMenuItem<void>(
               child: ProfilePopupMenuItem(
                 itemTitle: 'Notification',
@@ -41,6 +43,7 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
               onTap: () => CoreUtils.showSnackBar(context, 'Notification'),
             ),
+            const PopupMenuDivider(),
             PopupMenuItem<void>(
               child: ProfilePopupMenuItem(
                 itemTitle: 'Help',
@@ -51,6 +54,7 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
               onTap: () => CoreUtils.showSnackBar(context, 'Help'),
             ),
+            const PopupMenuDivider(),
             PopupMenuItem<void>(
               child: ProfilePopupMenuItem(
                 itemTitle: 'Logout',
