@@ -79,7 +79,7 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
                     await FirebaseAuth.instance.signOut();
                     unawaited(
                       navigator.pushNamedAndRemoveUntil(
-                        '/login',
+                        '/',
                         (route) => false,
                       ),
                     );
