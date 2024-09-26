@@ -1,5 +1,9 @@
+import 'dart:async';
+
+import 'package:education_project/core/common/widgets/custom_alert_dialog.dart';
 import 'package:education_project/core/utils/core_utils.dart';
 import 'package:education_project/src/profile/presentation/common/profile_popup_menu_item.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 
@@ -14,7 +18,7 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Theme.of(context).colorScheme.surface,
       actions: [
         PopupMenuButton<void>(
-          clipBehavior:  Clip.antiAlias,
+          clipBehavior: Clip.antiAlias,
           offset: const Offset(0, 36),
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
@@ -63,7 +67,26 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
                   color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
-              onTap: () => CoreUtils.showSnackBar(context, 'Logout'),
+              onTap: () {
+                final navigator = Navigator.of(context);
+                showCustomDialog(
+                  context,
+                  title: 'Logout',
+                  content: 'Are you sure you want to leave?',
+                  positiveButtonText: 'Confirm',
+                  negativeButtonText: 'Cancel',
+                  onPositivePressed: () async {
+                    await FirebaseAuth.instance.signOut();
+                    unawaited(
+                      navigator.pushNamedAndRemoveUntil(
+                        '/login',
+                        (route) => false,
+                      ),
+                    );
+                  },
+                  onNegativePressed: navigator.pop,
+                );
+              },
             ),
           ],
         ),
