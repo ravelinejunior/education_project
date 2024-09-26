@@ -1,5 +1,6 @@
 import 'package:education_project/core/common/app/providers/tab_navigator.dart';
 import 'package:education_project/core/common/views/persistent_view.dart';
+import 'package:education_project/src/profile/presentation/profile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +24,7 @@ class DashboardController extends ChangeNotifier {
     ChangeNotifierProvider(
       create: (context) => TabNavigator(
         TabItem(
-          child:  const SizedBox(
+          child: const SizedBox(
             child: Center(
               child: Text(
                 'Home',
@@ -37,7 +38,7 @@ class DashboardController extends ChangeNotifier {
     ChangeNotifierProvider(
       create: (context) => TabNavigator(
         TabItem(
-          child:  const SizedBox(
+          child: const SizedBox(
             child: Center(
               child: Text(
                 'Materials',
@@ -51,7 +52,7 @@ class DashboardController extends ChangeNotifier {
     ChangeNotifierProvider(
       create: (context) => TabNavigator(
         TabItem(
-          child:  const SizedBox(
+          child: const SizedBox(
             child: Center(
               child: Text(
                 'Chat',
@@ -65,13 +66,7 @@ class DashboardController extends ChangeNotifier {
     ChangeNotifierProvider(
       create: (context) => TabNavigator(
         TabItem(
-          child:  const SizedBox(
-            child: Center(
-              child: Text(
-                'Profile',
-              ),
-            ),
-          ),
+          child: const ProfileView(),
         ),
       ),
       child: const PersistentView(),
