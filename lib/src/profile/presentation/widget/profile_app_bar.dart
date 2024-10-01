@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:education_project/core/common/widgets/custom_alert_dialog.dart';
 import 'package:education_project/core/utils/core_utils.dart';
-import 'package:education_project/src/profile/presentation/common/profile_popup_menu_item.dart';
+import 'package:education_project/src/profile/presentation/widget/profile_popup_menu_item.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
