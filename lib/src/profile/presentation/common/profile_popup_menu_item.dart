@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ProfilePopupMenuItem extends StatelessWidget {
-  const ProfilePopupMenuItem(
-      {required this.itemTitle, required this.iconData, super.key});
+  const ProfilePopupMenuItem({
+    required this.itemTitle,
+    required this.iconData,
+    super.key,
+  });
 
   final String itemTitle;
   final Widget iconData;

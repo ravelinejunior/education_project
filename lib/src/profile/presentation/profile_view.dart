@@ -1,4 +1,5 @@
 import 'package:education_project/src/profile/presentation/common/profile_app_bar.dart';
+import 'package:education_project/src/profile/presentation/widget/profile_header.dart';
 import 'package:flutter/material.dart';
 
 class ProfileView extends StatelessWidget {
@@ -7,13 +8,13 @@ class ProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: const ProfileAppBar(),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-        ),
+      body: ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        children: [
+          const ProfileHeader(),
+        ],
       ),
     );
   }
