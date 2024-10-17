@@ -17,7 +17,7 @@ extension ContextExtension on BuildContext {
 
   LocalUserModel? get currentUser => userProvider.user;
 
-  TabNavigator get tabNavigator => read<TabNavigatorProvider>().navigator;
+  TabNavigator get tabNavigator => read<TabNavigator>();
   void pop() => tabNavigator.pop();
 
   void push(Widget page) => tabNavigator.push(page);

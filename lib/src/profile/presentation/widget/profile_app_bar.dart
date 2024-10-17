@@ -1,10 +1,15 @@
 import 'dart:async';
 
 import 'package:education_project/core/common/widgets/custom_alert_dialog.dart';
+import 'package:education_project/core/extensions/context_extensions.dart';
+import 'package:education_project/core/services/injection_container.dart';
 import 'package:education_project/core/utils/core_utils.dart';
+import 'package:education_project/src/auth/presentation/bloc/auth_bloc.dart';
+import 'package:education_project/src/profile/presentation/view/edit_profile_view.dart';
 import 'package:education_project/src/profile/presentation/widget/profile_popup_menu_item.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconly/iconly.dart';
 
 class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -34,7 +39,12 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
                   color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
-              onTap: () => CoreUtils.showSnackBar(context, 'Edit Profile'),
+              onTap: () => context.push(
+                BlocProvider(
+                  create: (_) => sl<AuthBloc>(),
+                  child: const EditProfileView(),
+                ),
+              ),
             ),
             const PopupMenuDivider(),
             PopupMenuItem<void>(

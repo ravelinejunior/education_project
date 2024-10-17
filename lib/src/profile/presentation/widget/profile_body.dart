@@ -1,5 +1,4 @@
 import 'package:education_project/core/common/app/providers/user_provider.dart';
-import 'package:education_project/core/res/icons.dart';
 import 'package:education_project/src/profile/presentation/widget/profile_body_item.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
