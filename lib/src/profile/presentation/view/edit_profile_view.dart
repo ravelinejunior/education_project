@@ -1,10 +1,10 @@
 import 'dart:io';
 
+import 'package:education_project/core/common/widgets/custom_alert_dialog.dart';
+import 'package:education_project/core/enum/update_user_enum.dart';
 import 'package:education_project/core/extensions/context_extensions.dart';
 import 'package:education_project/core/utils/core_utils.dart';
 import 'package:education_project/src/auth/presentation/bloc/auth_bloc.dart';
-import 'package:education_project/src/profile/presentation/widget/profile_body.dart';
-import 'package:education_project/src/profile/presentation/widget/profile_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -45,6 +45,13 @@ class _EditProfileViewState extends State<EditProfileView> {
       !bioChanged &&
       !imageChanged;
 
+  bool get didSomethingChange =>
+      nameChanged ||
+      emailChanged ||
+      passwordChanged ||
+      bioChanged ||
+      imageChanged;
+
   @override
   void initState() {
     super.initState();
@@ -75,33 +82,126 @@ class _EditProfileViewState extends State<EditProfileView> {
             child: CircularProgressIndicator(),
           );
         }
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text('Edit Profile'),
-            centerTitle: true,
-            leading: IconButton(
-              tooltip: 'Back',
-              icon: Theme.of(context).platform == TargetPlatform.android
-                  ? const Icon(Icons.arrow_back)
-                  : const Icon(
-                      Icons.arrow_back_ios_new,
-                    ),
-              onPressed: () {
-                try {
-                  context.pop();
-                } catch (e) {
+        // ignore: deprecated_member_use
+        return WillPopScope(
+          onWillPop: () async {
+            if (!didSomethingChange) {
+              await showCustomDialog(
+                context,
+                title: 'Leave Editing Profile',
+                content:
+                    'Are You Sure You Wanna Leave Without Saving Your Changes?',
+                positiveButtonText: 'Confirm',
+                negativeButtonText: 'Cancel',
+                onPositivePressed: () {
                   Navigator.of(context).pop();
-                }
-              },
+                  context.pop();
+                },
+                onNegativePressed: () {
+                  Navigator.of(context).pop();
+                },
+              );
+            }
+
+            return false;
+          },
+          child: Scaffold(
+            appBar: AppBar(
+              title: const Text('Edit Profile'),
+              centerTitle: true,
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    if (nothingChanged) {
+                      context.pop();
+                    }
+                    final bloc = context.read<AuthBloc>();
+                    if (nameChanged) {
+                      bloc.add(
+                        UpdateUserEvent(
+                          action: UpdateUserAction.displayName,
+                          userData: fullNameController.text.trim(),
+                        ),
+                      );
+                    }
+                    if (emailChanged) {
+                      bloc.add(
+                        UpdateUserEvent(
+                          action: UpdateUserAction.email,
+                          userData: emailController.text.trim(),
+                        ),
+                      );
+                    }
+                    if (passwordChanged) {
+                      if (oldPasswordController.text.isEmpty) {
+                        CoreUtils.showSnackBar(
+                          context,
+                          'Please enter your old password',
+                        );
+                        return;
+                      }
+
+                      bloc.add(
+                        UpdateUserEvent(
+                          action: UpdateUserAction.password,
+                          userData: passwordController.text.trim(),
+                        ),
+                      );
+                    }
+                    if (bioChanged) {
+                      bloc.add(
+                        UpdateUserEvent(
+                          action: UpdateUserAction.bio,
+                          userData: bioController.text.trim(),
+                        ),
+                      );
+                    }
+                  },
+                  child: state is AuthLoadingState
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : StatefulBuilder(
+                          builder: (_, refreshState) {
+                            fullNameController.addListener(() => refreshState);
+                            emailController.addListener(() => refreshState);
+                            bioController.addListener(() => refreshState);
+                            passwordController.addListener(() => refreshState);
+                            return Text(
+                              'Done',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: nothingChanged
+                                    ? Colors.grey
+                                    : Colors.blueAccent,
+                                fontSize: 16,
+                              ),
+                            );
+                          },
+                        ),
+                ),
+              ],
+              leading: IconButton(
+                tooltip: 'Back',
+                icon: Theme.of(context).platform == TargetPlatform.android
+                    ? const Icon(Icons.arrow_back)
+                    : const Icon(
+                        Icons.arrow_back_ios_new,
+                      ),
+                onPressed: () {
+                  try {
+                    context.pop();
+                  } catch (e) {
+                    Navigator.of(context).pop();
+                  }
+                },
+              ),
             ),
-          ),
-          backgroundColor: Theme.of(context).colorScheme.surface,
-          body: ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            children: [
-              const ProfileHeader(),
-              const ProfileBody(),
-            ],
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            body: ListView(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              children: [],
+            ),
           ),
         );
       },
