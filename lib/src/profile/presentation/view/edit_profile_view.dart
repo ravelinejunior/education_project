@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:education_project/core/common/widgets/custom_alert_dialog.dart';
 import 'package:education_project/core/enum/update_user_enum.dart';
 import 'package:education_project/core/extensions/context_extensions.dart';
+import 'package:education_project/core/res/icons.dart';
 import 'package:education_project/core/utils/core_utils.dart';
 import 'package:education_project/src/auth/presentation/bloc/auth_bloc.dart';
 import 'package:flutter/material.dart';
@@ -144,7 +146,10 @@ class _EditProfileViewState extends State<EditProfileView> {
                       bloc.add(
                         UpdateUserEvent(
                           action: UpdateUserAction.password,
-                          userData: passwordController.text.trim(),
+                          userData: jsonEncode({
+                            'oldPassword': oldPasswordController.text.trim(),
+                            'newPassword': passwordController.text.trim(),
+                          }),
                         ),
                       );
                     }
@@ -153,6 +158,14 @@ class _EditProfileViewState extends State<EditProfileView> {
                         UpdateUserEvent(
                           action: UpdateUserAction.bio,
                           userData: bioController.text.trim(),
+                        ),
+                      );
+                    }
+                    if (imageChanged) {
+                      bloc.add(
+                        UpdateUserEvent(
+                          action: UpdateUserAction.profileImage,
+                          userData: pickedImage,
                         ),
                       );
                     }
@@ -199,8 +212,86 @@ class _EditProfileViewState extends State<EditProfileView> {
             ),
             backgroundColor: Theme.of(context).colorScheme.surface,
             body: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              children: [],
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              children: [
+                Builder(
+                  builder: (context) {
+                    final user = context.currentUser!;
+                    final userImage = user.profileImageUrl == null ||
+                            user.profileImageUrl!.isEmpty
+                        ? null
+                        : user.profileImageUrl;
+
+                    return CircleAvatar(
+                      radius: 90,
+                      backgroundColor: Colors.transparent,
+                      child: Stack(
+                        alignment: AlignmentDirectional.center,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Theme.of(context).colorScheme.onSurface,
+                                width: 2,
+                              ),
+                            ),
+                          ),
+                          ClipOval(
+                            child: pickedImage != null
+                                ? Image.file(
+                                    pickedImage!,
+                                    width: 180,
+                                    height: 180,
+                                    fit: BoxFit.fill,
+                                  )
+                                : userImage != null
+                                    ? Image.network(
+                                        userImage,
+                                        width: 180,
+                                        height: 180,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Image.asset(
+                                        MediaRes.homeIcon,
+                                        width: 180,
+                                        height: 180,
+                                        fit: BoxFit.cover,
+                                      ),
+                          ),
+                          IconButton(
+                            onPressed: pickImageFromGallery,
+                            icon: Icon(
+                              (pickedImage != null ||
+                                      user.profileImageUrl != null)
+                                  ? Icons.edit
+                                  : Icons.add_a_photo_outlined,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurface
+                                  .withOpacity(0.8),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+                const SizedBox(height: 12),
+                const Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 20,
+                  ),
+                  child: Text(
+                    '*We recommend an image of at least 400x400 px',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.red,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         );
