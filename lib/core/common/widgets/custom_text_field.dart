@@ -3,22 +3,28 @@ import 'package:flutter/material.dart';
 class CustomTextField extends StatefulWidget {
   const CustomTextField({
     required this.controller,
-    required this.labelText,
+    this.labelText,
     required this.hintText,
     required this.prefixIcon,
     super.key,
     this.isPasswordField = false,
     this.keyboardType = TextInputType.text,
     this.validator,
+    this.readOnly,
+    this.minHeight,
+    this.maxHeight,
   });
 
   final TextEditingController controller;
-  final String labelText;
+  final String? labelText;
   final String hintText;
   final Icon prefixIcon;
   final bool isPasswordField;
   final TextInputType keyboardType;
   final String? Function(String?)? validator;
+  final bool? readOnly;
+  final int? minHeight;
+  final int? maxHeight;
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -39,7 +45,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           widget.isPasswordField && _obscureText ? _obscureText : false,
       keyboardType: widget.keyboardType,
       cursorColor: Colors.grey,
-      style: const TextStyle(color: Colors.black),
+      style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
       decoration: InputDecoration(
         labelText: widget.labelText,
         hintText: widget.hintText,
@@ -60,7 +66,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
         errorBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: Colors.red),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 20, vertical: 32),
         suffixIcon: widget.isPasswordField
             ? IconButton(
                 icon: Icon(
@@ -75,6 +82,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
             : null,
       ),
       validator: widget.validator,
+      readOnly: widget.readOnly ?? false,
+      minLines: widget.minHeight ?? 1,
+      maxLines: widget.maxHeight,
     );
   }
 }

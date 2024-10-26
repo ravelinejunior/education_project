@@ -7,6 +7,7 @@ import 'package:education_project/core/extensions/context_extensions.dart';
 import 'package:education_project/core/res/icons.dart';
 import 'package:education_project/core/utils/core_utils.dart';
 import 'package:education_project/src/auth/presentation/bloc/auth_bloc.dart';
+import 'package:education_project/src/profile/presentation/view/commons/edit_profile_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -291,6 +292,14 @@ class _EditProfileViewState extends State<EditProfileView> {
                     ),
                   ),
                 ),
+                const SizedBox(height: 24),
+                EditProfileForm(
+                  nameController: fullNameController,
+                  emailController: emailController,
+                  passwordController: passwordController,
+                  oldPasswordController: oldPasswordController,
+                  bioController: bioController,
+                )
               ],
             ),
           ),
