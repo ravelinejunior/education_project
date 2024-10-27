@@ -179,8 +179,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           );
           await _updateUserData({'email': userData});
         case UpdateUserAction.profileImage:
-          final reference = _firebaseStorage.ref().child('Profile_Image').child(
-                _firebaseAuth.currentUser!.uid,
+          final reference = _firebaseStorage
+              .ref()
+              .child('Profile_Image')
+              .child(_firebaseAuth.currentUser!.uid)
+              .child(
+                '${DateTime.now().millisecondsSinceEpoch}.jpeg',
               );
 
           await reference.putFile(userData as File);

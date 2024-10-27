@@ -69,7 +69,7 @@ class EditProfileForm extends StatelessWidget {
           fieldText: 'BIO',
           controller: bioController,
           hintText: 'BIO',
-          minHeight: 8,
+          minHeight: 4,
           maxLines: 10,
           prefixIcon: const Icon(Icons.info_outline_rounded),
         ),
