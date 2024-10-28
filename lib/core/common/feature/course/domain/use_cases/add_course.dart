@@ -8,6 +8,6 @@ class AddCourse extends UseCaseWithParams<void, Course> {
   final CourseRepository _repository;
   @override
   ResultFuture<void> call(Course course) {
-    return _repository.addCourses(course);
+    return _repository.addCourse(course);
   }
 }
