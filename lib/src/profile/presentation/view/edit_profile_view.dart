@@ -299,7 +299,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                   passwordController: passwordController,
                   oldPasswordController: oldPasswordController,
                   bioController: bioController,
-                )
+                ),
               ],
             ),
           ),

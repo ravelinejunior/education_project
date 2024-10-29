@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class ProfileBodyItem extends StatelessWidget {
   const ProfileBodyItem({
-    super.key,
     required this.infoThemeColor,
     required this.infoIcon,
     required this.infoTitle,
     required this.infoValue,
+    super.key,
   });
 
   final Color infoThemeColor;
